@@ -11,6 +11,10 @@ Sample Grafana dashboard displaying common metrics from the plugins.
 
 ![image](https://raw.github.com/rochaporto/collectd-ceph/master/public/ceph-overview.png)
 
+![image](https://raw.github.com/rochaporto/collectd-ceph/master/public/ceph-dash2.png)
+
+[Check here](grafana/ceph-overview.json) for the dashboard definition.
+
 ## Plugins and Metrics
 
 There are several plugins, usually mapping to the ceph command line tools.
@@ -37,11 +41,15 @@ Find below a list of the available plugins and the metrics they publish.
   * ceph-&lt;cluster>.cluster.gauge.total_used (cluster raw space used)
 * ceph_pg_plugin
   * ceph-&lt;cluster>.pg.gauge.&lt;state> (number of pgs in &lt;state>)
+  * ceph-&lt;cluster>.osd-&lt;id>.gauge.fs_commit_latency (fs commit latency for osd)
+  * ceph-&lt;cluster>.osd-&lt;id>.gauge.apply_commit_latency (apply commit latency for osd)
+  * ceph-&lt;cluster>.osd-&lt;id>.gauge.kb_used (kb used by osd)
+  * ceph-&lt;cluster>.osd-&lt;id>.gauge.kb (total space of osd)
 * ceph_latency_plugin
-  * ceph-&lt;cluster>.cluster.avg_latency (avg cluster latency)
-  * ceph-&lt;cluster>.cluster.max_latency (max cluster latency)
-  * ceph-&lt;cluster>.cluster.min_latency (min cluster latency)
-  * ceph-&lt;cluster>.cluster.stddev_latency (stddev of cluster latency)
+  * ceph-&lt;cluster>.cluster.gauge.avg_latency (avg cluster latency)
+  * ceph-&lt;cluster>.cluster.gauge.max_latency (max cluster latency)
+  * ceph-&lt;cluster>.cluster.gauge.min_latency (min cluster latency)
+  * ceph-&lt;cluster>.cluster.gauge.stddev_latency (stddev of cluster latency)
 
 ## Requirements
 
@@ -98,6 +106,10 @@ It has plenty of docs on how to use it, but for our specific plugins:
   }
 ```
 
+### Docker
+
+Check [this repo](https://github.com/bobrik/ceph-collectd-graphite) for a nice docker setup to run collectd-ceph (thanks to Ian Babrou).
+
 ## Limitations
 
 The debian packaging files are provided, but not yet available in the official repos.
@@ -112,7 +124,7 @@ GPLv2 (check LICENSE).
 
 ## Contributors
 
-Ricardo Rocha <ricardo@catalyst.net.nz>
+Ricardo Rocha <rocha.porto@gmail.com>
 
 ## Support
 

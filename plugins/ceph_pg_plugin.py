@@ -48,7 +48,7 @@ class CephPGPlugin(base.Base):
         data = { ceph_cluster: { 'pg': { } }  }
         output = None
         try:
-            output = subprocess.check_output(['ceph', 'pg', 'dump', '--format', 'json'])
+            output = subprocess.check_output('ceph pg dump --format json', shell=True)
         except Exception as exc:
             collectd.error("ceph-pg: failed to ceph pg dump :: %s :: %s"
                     % (exc, traceback.format_exc()))
@@ -67,6 +67,17 @@ class CephPGPlugin(base.Base):
                     pg_data[state] = 0
                 pg_data[state] += 1
     
+        # osd perf data
+        for osd in json_data['osd_stats']:
+            osd_id = "osd-%s" % osd['osd']
+            data[ceph_cluster][osd_id] = {}
+            data[ceph_cluster][osd_id]['kb_used'] = osd['kb_used']
+            data[ceph_cluster][osd_id]['kb_total'] = osd['kb']
+            data[ceph_cluster][osd_id]['snap_trim_queue_len'] = osd['snap_trim_queue_len']
+            data[ceph_cluster][osd_id]['num_snap_trimming'] = osd['num_snap_trimming']
+            data[ceph_cluster][osd_id]['apply_latency_ms'] = osd['fs_perf_stat']['apply_latency_ms']
+            data[ceph_cluster][osd_id]['commit_latency_ms'] = osd['fs_perf_stat']['commit_latency_ms']
+
         return data
 
 try:
@@ -84,5 +95,5 @@ def read_callback():
     plugin.read_callback()
 
 collectd.register_config(configure_callback)
-collectd.register_read(read_callback)
+collectd.register_read(read_callback, plugin.interval)
 

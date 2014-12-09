@@ -51,7 +51,7 @@ class CephLatencyPlugin(base.Base):
         output = None
         try:
             output = subprocess.check_output(
-              "rados -p data bench 10 write -t 1 -b 65536 2>/dev/null | grep -i latency | awk '{print 1000*$3}'", shell=True)
+              "timeout 30s rados -p data bench 10 write -t 1 -b 65536 2>/dev/null | grep -i latency | awk '{print 1000*$3}'", shell=True)
         except Exception as exc:
             collectd.error("ceph-latency: failed to run rados bench :: %s :: %s"
                     % (exc, traceback.format_exc()))
@@ -85,5 +85,5 @@ def read_callback():
     plugin.read_callback()
 
 collectd.register_config(configure_callback)
-collectd.register_read(read_callback)
+collectd.register_read(read_callback, plugin.interval)
 

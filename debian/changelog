@@ -1,3 +1,30 @@
+collectd-ceph (0.4.0-1ubuntu1) precise; urgency=low
+
+  * Added osd latency metrics and usage
+
+ -- Ricardo Rocha <ricardo@catalyst.net.nz>  Thu, 25 Sep 2014 15:08:52 +1200
+
+collectd-ceph (0.3.0-1ubuntu1) precise; urgency=low
+
+  * Publish pool metadata stats (#17)
+  * Fixed bugs:
+    - #16: protect against failures in ceph latency plugin
+
+ -- Ricardo Rocha <ricardo@catalyst.net.nz>  Thu, 17 Jul 2014 15:08:52 +1200
+
+collectd-ceph (0.2.1-1ubuntu1) precise; urgency=low
+
+  * Use shell processes when triggering subprocess.
+  * Added __init__.py to plugin directory.
+
+ -- Ricardo Rocha <ricardo@catalyst.net.nz>  Tue, 08 Jul 2014 14:08:52 +1200
+
+collectd-ceph (0.2.0-1ubuntu1) precise; urgency=low
+
+  * Added plugins for stats on monitors, osds, pools, pgs, latency
+
+ -- Ricardo Rocha <ricardo@catalyst.net.nz>  Fri, 23 May 2014 14:08:52 +1200
+
 collectd-ceph (0.1-1ubuntu1) precise; urgency=low
 
   * Initial release.
