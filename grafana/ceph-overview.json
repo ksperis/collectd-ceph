@@ -26,7 +26,7 @@
         {
           "type": "filter",
           "name": "pool",
-          "query": "collectd.*.*.pool-*",
+          "query": "collectd.*.ceph-*-pool-*",
           "includeAll": true,
           "options": [
             {
@@ -101,7 +101,10 @@
           "current": {
             "text": "All",
             "value": "*"
-          }
+          },
+          "datasource": null,
+          "allFormat": "glob",
+          "regex": ".*-(pool-.*).*"
         }
       ],
       "time": {
@@ -170,22 +173,22 @@
           },
           "targets": [
             {
-              "target": "alias(sumSeries(collectd.*.[[cluster]].[[pool]].gauge.bytes_used),'Pool Used')",
+              "target": "alias(sumSeries(collectd.*.[[cluster]]-[[pool]].gauge-bytes_used.value),'Pool Used')",
               "hide": false
             },
             {
-              "target": "alias(divideSeries(sumSeries(collectd.*.[[cluster]].cluster.gauge.total_avail), averageSeries(collectd.*.[[cluster]].[[pool]].gauge.size)), 'Pool Available')",
+              "target": "alias(divideSeries(sumSeries(collectd.*.[[cluster]]-cluster.gauge-total_avail.value), averageSeries(collectd.*.[[cluster]]-[[pool]].gauge-size.value)), 'Pool Available')",
               "hide": false
             },
             {
-              "target": "alias(collectd.*.[[cluster]].cluster.gauge.total_avail,'Raw Available')",
+              "target": "alias(collectd.*.[[cluster]]-cluster.gauge-total_avail.value,'Raw Available')",
               "hide": false
             },
             {
-              "target": "alias(collectd.*.[[cluster]].cluster.gauge.total_used,'Raw Used')"
+              "target": "alias(collectd.*.[[cluster]]-cluster.gauge-total_used.value,'Raw Used')"
             },
             {
-              "target": "alias(collectd.*.[[cluster]].cluster.gauge.total_space,'Raw Total')",
+              "target": "alias(collectd.*.[[cluster]]-cluster.gauge-total_space.value,'Raw Total')",
               "hide": false
             }
           ],
@@ -251,10 +254,12 @@
           },
           "targets": [
             {
-              "target": "alias(removeAbovePercentile(sumSeries(collectd.*.[[cluster]].[[pool]].gauge.read_bytes_sec),99),'Read')"
+              "target": "alias(sumSeries(collectd.*.[[cluster]]-[[pool]].gauge-read_bytes_sec.value), 'Write')",
+              "hide": false
             },
             {
-              "target": "alias(removeAbovePercentile(sumSeries(collectd.*.[[cluster]].[[pool]].gauge.write_bytes_sec),99),'Write')"
+              "target": "alias(sumSeries(collectd.*.[[cluster]]-[[pool]].gauge-write_bytes_sec.value), 'Write')",
+              "hide": false
             }
           ],
           "aliasColors": {},
@@ -323,7 +328,7 @@
           },
           "targets": [
             {
-              "target": "alias(removeAbovePercentile(sumSeries(collectd.*.[[cluster]].[[pool]].gauge.op_per_sec),99),'IOPS')"
+              "target": "alias(sumSeries(collectd.*.[[cluster]]-[[pool]].gauge-op_per_sec.value), 'IOPS')"
             }
           ],
           "aliasColors": {},
@@ -382,16 +387,16 @@
           },
           "targets": [
             {
-              "target": "alias(collectd.*.[[cluster]].cluster.gauge.avg_latency,'Avg')"
+              "target": "alias(collectd.*.[[cluster]]-cluster.gauge-avg_latency.value,'Avg')"
             },
             {
-              "target": "alias(collectd.*.[[cluster]].cluster.gauge.max_latency,'Max')"
+              "target": "alias(collectd.*.[[cluster]]-cluster.gauge-max_latency.value,'Max')"
             },
             {
-              "target": "alias(collectd.*.[[cluster]].cluster.gauge.min_latency,'Min')"
+              "target": "alias(collectd.*.[[cluster]]-cluster.gauge-min_latency.value,'Min')"
             },
             {
-              "target": "alias(collectd.*.[[cluster]].cluster.gauge.stddev_latency,'Stddev')"
+              "target": "alias(collectd.*.[[cluster]]-cluster.gauge-stddev_latency.value,'Stddev')"
             }
           ],
           "aliasColors": {},
@@ -460,10 +465,10 @@
           },
           "targets": [
             {
-              "target": "alias(collectd.*.[[cluster]].mon.gauge.number,'Total')"
+              "target": "alias(collectd.*.[[cluster]]-mon.gauge-number.value,'Total')"
             },
             {
-              "target": "alias(collectd.*.[[cluster]].mon.gauge.quorum,'Quorum')"
+              "target": "alias(collectd.*.[[cluster]]-mon.gauge-quorum.value,'Quorum')"
             }
           ],
           "aliasColors": {},
@@ -522,16 +527,16 @@
           },
           "targets": [
             {
-              "target": "alias(collectd.*.[[cluster]].osd.gauge.up,'Up')"
+              "target": "alias(collectd.*.[[cluster]]-osd.gauge-up.value,'Up')"
             },
             {
-              "target": "alias(collectd.*.[[cluster]].osd.gauge.down,'Down')"
+              "target": "alias(collectd.*.[[cluster]]-osd.gauge-down.value,'Down')"
             },
             {
-              "target": "alias(collectd.*.[[cluster]].osd.gauge.in,'In')"
+              "target": "alias(collectd.*.[[cluster]]-osd.gauge-in.value,'In')"
             },
             {
-              "target": "alias(collectd.*.[[cluster]].osd.gauge.out,'Out')"
+              "target": "alias(collectd.*.[[cluster]]-osd.gauge-out.value,'Out')"
             }
           ],
           "aliasColors": {},
@@ -592,58 +597,58 @@
           },
           "targets": [
             {
-              "target": "alias(collectd.*.[[cluster]].pg.gauge.creating,'Creating')"
+              "target": "alias(collectd.*.[[cluster]]-pg.gauge-creating.value,'Creating')"
             },
             {
-              "target": "alias(collectd.*.[[cluster]].pg.gauge.clean,'Clean')"
+              "target": "alias(collectd.*.[[cluster]]-pg.gauge-clean.value,'Clean')"
             },
             {
-              "target": "alias(collectd.*.[[cluster]].pg.gauge.active,'Active')"
+              "target": "alias(collectd.*.[[cluster]]-pg.gauge-active.value,'Active')"
             },
             {
-              "target": "alias(collectd.*.[[cluster]].pg.gauge.down,'Down')"
+              "target": "alias(collectd.*.[[cluster]]-pg.gauge-down.value,'Down')"
             },
             {
-              "target": "alias(collectd.*.[[cluster]].pg.gauge.replay,'Replay')"
+              "target": "alias(collectd.*.[[cluster]]-pg.gauge-replay.value,'Replay')"
             },
             {
-              "target": "alias(collectd.*.[[cluster]].pg.gauge.splitting,'Splitting')"
+              "target": "alias(collectd.*.[[cluster]]-pg.gauge-splitting.value,'Splitting')"
             },
             {
-              "target": "alias(collectd.*.[[cluster]].pg.gauge.scrubbing,'Scrubbing')"
+              "target": "alias(collectd.*.[[cluster]]-pg.gauge-scrubbing.value,'Scrubbing')"
             },
             {
-              "target": "alias(collectd.*.[[cluster]].pg.gauge.degraded,'Degraded')"
+              "target": "alias(collectd.*.[[cluster]]-pg.gauge-degraded.value,'Degraded')"
             },
             {
-              "target": "alias(collectd.*.[[cluster]].pg.gauge.inconsistent,'Inconsistent')"
+              "target": "alias(collectd.*.[[cluster]]-pg.gauge-inconsistent.value,'Inconsistent')"
             },
             {
-              "target": "alias(collectd.*.[[cluster]].pg.gauge.peering,'Peering')"
+              "target": "alias(collectd.*.[[cluster]]-pg.gauge-peering.value,'Peering')"
             },
             {
-              "target": "alias(collectd.*.[[cluster]].pg.gauge.repair,'Repair')"
+              "target": "alias(collectd.*.[[cluster]]-pg.gauge-repair.value,'Repair')"
             },
             {
-              "target": "alias(collectd.*.[[cluster]].pg.gauge.recovering,'Recovering')"
+              "target": "alias(collectd.*.[[cluster]]-pg.gauge-recovering.value,'Recovering')"
             },
             {
-              "target": "alias(collectd.*.[[cluster]].pg.gauge.backfill,'Backfill')"
+              "target": "alias(collectd.*.[[cluster]]-pg.gauge-backfill.value,'Backfill')"
             },
             {
-              "target": "alias(collectd.*.[[cluster]].pg.gauge.wait-backfill,'Wait Backfill')"
+              "target": "alias(collectd.*.[[cluster]]-pg.gauge-wait-backfill.value,'Wait Backfill')"
             },
             {
-              "target": "alias(collectd.*.[[cluster]].pg.gauge.backfill-toofull,'Backfill Toofull')"
+              "target": "alias(collectd.*.[[cluster]]-pg.gauge-backfill-toofull.value,'Backfill Toofull')"
             },
             {
-              "target": "alias(collectd.*.[[cluster]].pg.gauge.incomplete,'Incomplete')"
+              "target": "alias(collectd.*.[[cluster]]-pg.gauge-incomplete.value,'Incomplete')"
             },
             {
-              "target": "alias(collectd.*.[[cluster]].pg.gauge.stale,'Stale')"
+              "target": "alias(collectd.*.[[cluster]]-pg.gauge-stale.value,'Stale')"
             },
             {
-              "target": "alias(collectd.*.[[cluster]].pg.gauge.remapped,'Remapped')"
+              "target": "alias(collectd.*.[[cluster]]-pg.gauge-remapped.value,'Remapped')"
             }
           ],
           "aliasColors": {},
@@ -712,7 +717,7 @@
           },
           "targets": [
             {
-              "target": "aliasByNode(collectd.*.[[cluster]].osd-*.gauge.apply_latency_ms,3)"
+              "target": "aliasByNode(collectd.*.[[cluster]]-osd-*.gauge-apply_latency_ms.value,2)"
             }
           ],
           "aliasColors": {},
@@ -771,7 +776,7 @@
           },
           "targets": [
             {
-              "target": "aliasByNode(collectd.*.[[cluster]].osd-*.gauge.commit_latency_ms,3)"
+              "target": "aliasByNode(collectd.*.[[cluster]]-osd-*.gauge-commit_latency_ms.value, 2)"
             }
           ],
           "aliasColors": {},
@@ -840,7 +845,7 @@
           },
           "targets": [
             {
-              "target": "aliasByNode(scale(collectd.*.[[cluster]].osd-*.gauge.kb_used,1000),3)"
+              "target": "aliasByNode(scale(collectd.*.[[cluster]]-osd-*.gauge-kb_used.value, 1000), 2)"
             }
           ],
           "aliasColors": {},
@@ -899,7 +904,7 @@
           },
           "targets": [
             {
-              "target": "aliasByNode(collectd.*.[[cluster]].osd-*.gauge.num_snap_trimming,3)"
+              "target": "aliasByNode(collectd.*.[[cluster]]-osd-*.gauge-num_snap_trimming.value,2)"
             }
           ],
           "aliasColors": {},
