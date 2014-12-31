@@ -254,7 +254,7 @@
           },
           "targets": [
             {
-              "target": "alias(sumSeries(collectd.*.[[cluster]]-[[pool]].gauge-read_bytes_sec.value), 'Write')",
+              "target": "alias(sumSeries(collectd.*.[[cluster]]-[[pool]].gauge-read_bytes_sec.value), 'Read')",
               "hide": false
             },
             {
