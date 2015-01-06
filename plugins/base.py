@@ -38,7 +38,7 @@ class Base(object):
         self.debug = False
         self.prefix = ''
         self.cluster = 'ceph'
-        self.testpool = 'test'
+        self.testpool = []
         self.interval = 60.0
 
     def config_callback(self, conf):
@@ -55,7 +55,9 @@ class Base(object):
             elif node.key == 'Cluster':
                 self.cluster = node.values[0]
             elif node.key == 'TestPool':
-                self.testpool = node.values[0]
+                for v in node.values:
+                    if v not in self.testpool:
+                        self.testpool.append(v)
             elif node.key == 'Interval':
                 self.interval = float(node.values[0])
             else:

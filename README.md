@@ -83,8 +83,18 @@ should follow something similar to:
         Verbose "True"
         Cluster "ceph"
         Interval "60"
-        TestPool "test"
     </Module>
+
+    Import "ceph_latency_plugin"
+    
+    <Module "ceph_latency_plugin">
+        Verbose "True"
+        Cluster "ceph"
+        Interval "600"
+        TestPool "ssd_pool"
+        TestPool "hdd_pool"
+    </Module>
+
 </Plugin>
 ```
 

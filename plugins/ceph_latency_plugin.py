@@ -48,25 +48,27 @@ class CephLatencyPlugin(base.Base):
 
         data = { ceph_cluster: {} }
 
-        output = None
-        try:
-            output = subprocess.check_output(
-              "timeout 30s rados -p " + self.testpool + " bench 10 write -t 1 -b 65536 2>/dev/null | grep -i latency | awk '{print 1000*$3}'", shell=True)
-        except Exception as exc:
-            collectd.error("ceph-latency: failed to run rados bench :: %s :: %s"
-                    % (exc, traceback.format_exc()))
-            return
+        for pool in self.testpool:
+            output = None
+            try:
+                output = subprocess.check_output(
+                  "timeout 30s rados -p " + pool + " bench 10 write -t 1 -b 65536 2>/dev/null | grep -i latency | awk '{print 1000*$3}'", shell=True)
+            except Exception as exc:
+                collectd.error("ceph-latency: failed to run rados bench :: %s :: %s"
+                        % (exc, traceback.format_exc()))
+                return
 
-        if output is None:
-            collectd.error('ceph-latency: failed to run rados bench :: output was None')
+            if output is None:
+                collectd.error('ceph-latency: failed to run rados bench :: output was None')
 
-        results = output.split('\n')
-        # push values
-        data[ceph_cluster]['cluster'] = {}
-        data[ceph_cluster]['cluster']['avg_latency'] = results[0]
-        data[ceph_cluster]['cluster']['stddev_latency'] = results[1]
-        data[ceph_cluster]['cluster']['max_latency'] = results[2]
-        data[ceph_cluster]['cluster']['min_latency'] = results[3]
+            results = output.split('\n')
+            # push values
+            pool_name = "pool-%s" % pool.replace('.', '_')
+            data[ceph_cluster][pool_name] = {}
+            data[ceph_cluster][pool_name]['avg_latency'] = results[0]
+            data[ceph_cluster][pool_name]['stddev_latency'] = results[1]
+            data[ceph_cluster][pool_name]['max_latency'] = results[2]
+            data[ceph_cluster][pool_name]['min_latency'] = results[3]
 
         return data
 
