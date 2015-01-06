@@ -69,7 +69,7 @@ class CephPoolPlugin(base.Base):
 
         # push osd pool stats results
         for pool in json_stats_data:
-            pool_key = "pool-%s" % pool['pool_name']
+            pool_key = "pool-%s" % pool['pool_name'].replace('.', '_')
             data[ceph_cluster][pool_key] = {}
             pool_data = data[ceph_cluster][pool_key]
             for stat in ('read_bytes_sec', 'write_bytes_sec', 'op_per_sec'):
@@ -77,7 +77,7 @@ class CephPoolPlugin(base.Base):
 
         # push df results
         for pool in json_df_data['pools']:
-            pool_data = data[ceph_cluster]["pool-%s" % pool['name']]
+            pool_data = data[ceph_cluster]["pool-%s" % pool['name'].replace('.', '_')]
             for stat in ('bytes_used', 'kb_used', 'objects'):
                 pool_data[stat] = pool['stats'][stat] if pool['stats'].has_key(stat) else 0
 

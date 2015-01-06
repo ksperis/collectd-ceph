@@ -69,7 +69,7 @@ class CephOsdPlugin(base.Base):
 
         # pool metadata
         for pool in json_data['pools']:
-            pool_name = "pool-%s" % pool['pool_name']
+            pool_name = "pool-%s" % pool['pool_name'].replace('.', '_')
             data[ceph_cluster][pool_name] = {}
             data[ceph_cluster][pool_name]['size'] = pool['size']
             data[ceph_cluster][pool_name]['pg_num'] = pool['pg_num']
